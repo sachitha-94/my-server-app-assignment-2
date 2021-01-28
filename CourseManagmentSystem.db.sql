@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS "Course" (
 	"Course_Name"	TEXT NOT NULL,
 	"Pre_Course_Req"	TEXT,
 	"Course_Type_Code_Id"	INTEGER NOT NULL,
-	FOREIGN KEY("Course_Type_Code_Id") REFERENCES "Course_Type_Code"("courser_type_code_id"),
+	"Department_Id"	INTEGER ,
+	FOREIGN KEY("Course_Type_Code_Id") REFERENCES "Course_Type_Code"("courser_type_code_id") ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY("Department_Id") REFERENCES "Department"("Department_Id") ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY("Course_Id" AUTOINCREMENT),
 	UNIQUE("Course_Name")
 );
@@ -48,22 +50,22 @@ CREATE TABLE IF NOT EXISTS "Module_Type_Code" (
 CREATE TABLE IF NOT EXISTS "Module" (
 	"Module_Id"	INTEGER NOT NULL,
 	"Module_Name"	TEXT NOT NULL,
-	"Course_Id"	INTEGER NOT NULL,
-	"Teacher_Id"	INTEGER NOT NULL,
+	"Course_Id"	INTEGER ,
+	"Teacher_Id"	INTEGER ,
 	"Course_Year_Id"	INTEGER NOT NULL,
-	FOREIGN KEY("Teacher_Id") REFERENCES "User"("User_Id"),
-	FOREIGN KEY("Course_Id") REFERENCES "Course"("Course_Id"),
+	FOREIGN KEY("Teacher_Id") REFERENCES "User"("User_Id") ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY("Course_Id") REFERENCES "Course"("Course_Id") ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY("Course_Year_Id") REFERENCES "Course_Year"("Course_Year_id"),
 	PRIMARY KEY("Module_Id" AUTOINCREMENT),
 	UNIQUE("Module_Name")
 );
 CREATE TABLE IF NOT EXISTS "Exam" (
 	"Exam_Id"	INTEGER NOT NULL,
-	"Module_Id"	INTEGER NOT NULL,
+	"Module_Id"	INTEGER ,
 	"Exam_Type_Code_Id"	INTEGER NOT NULL,
 	"Exam_Name"	TEXT NOT NULL,
 	FOREIGN KEY("Exam_Type_Code_Id") REFERENCES "Exam_Type_Code"("Exam_Type_Code_ID"),
-	FOREIGN KEY("Module_Id") REFERENCES "Module"("Module_Id"),
+	FOREIGN KEY("Module_Id") REFERENCES "Module"("Module_Id") ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY("Exam_Id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "User" (
@@ -80,21 +82,21 @@ CREATE TABLE IF NOT EXISTS "User" (
 CREATE TABLE IF NOT EXISTS "Department" (
 	"Department_Id"	INTEGER NOT NULL,
 	"Department_Name"	INTEGER NOT NULL,
-	"Department_Admin_Id"	INTEGER NOT NULL,
-	FOREIGN KEY("Department_Admin_Id") REFERENCES "User"("User_Id"),
+	"Department_Admin_Id"	INTEGER ,
+	FOREIGN KEY("Department_Admin_Id") REFERENCES "User"("User_Id") ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY("Department_Id" AUTOINCREMENT),
 	UNIQUE("Department_Name")
 );
 
 CREATE TABLE IF NOT EXISTS "Student_Course_Status" (
 	"Student_Id"	INTEGER NOT NULL,
-	"Course_Id"	INTEGER NOT NULL,
+	"Course_Id"	INTEGER ,
 	"Status_Type_Code_Id" INTEGER NOT NULL,
 	"Enrollment_Status" INTEGER NOT NULL,
 	FOREIGN KEY("Status_Type_Code_Id") REFERENCES "Status_Type_Code"("Status_Type_Code_Id"),
 	FOREIGN KEY("Enrollment_Status") REFERENCES "Status_Type_Code"("Status_Type_Code_Id"),
-	FOREIGN KEY("Student_Id") REFERENCES "User"("User_Id"),
-	FOREIGN KEY("Course_Id") REFERENCES "Course"("Course_Id")
+	FOREIGN KEY("Student_Id") REFERENCES "User"("User_Id") ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY("Course_Id") REFERENCES "Course"("Course_Id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "Student_CourseYear_Status" (
@@ -111,8 +113,8 @@ CREATE TABLE IF NOT EXISTS "Student_Exam" (
 	"Exam_Id"	INTEGER NOT NULL,
 	"Total_Marks"	NUMERIC NOT NULL,
 	"Obtained_Marks"	NUMERIC NOT NULL,
-	FOREIGN KEY("Student_Id") REFERENCES "User"("User_Id"),
-	FOREIGN KEY("Exam_Id") REFERENCES "Exam"("Exam_Id")
+	FOREIGN KEY("Student_Id") REFERENCES "User"("User_Id") ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY("Exam_Id") REFERENCES "Exam"("Exam_Id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS "Request_Type_Code" (
 	"Request_Type_Code_Id"	INTEGER NOT NULL,
@@ -129,8 +131,8 @@ CREATE TABLE IF NOT EXISTS "User_Request" (
 	"Course_Id" INTEGER NULL,
 	"Comments"	TEXT,
 	FOREIGN KEY("Request_Type_Id") REFERENCES "Request_Type_Code"("Request_Type_Code_Id"),
-	FOREIGN KEY("Course_Id") REFERENCES "Course"("Course_Id"),
+	FOREIGN KEY("Course_Id") REFERENCES "Course"("Course_Id") ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY("Status_Type_Code_Id") REFERENCES "Status_Type_Code"("Status_Type_Code_Id"),
-	FOREIGN KEY("User_Id") REFERENCES "User"("User_Id"),
+	FOREIGN KEY("User_Id") REFERENCES "User"("User_Id") ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY("User_Request_Id" AUTOINCREMENT)
 )

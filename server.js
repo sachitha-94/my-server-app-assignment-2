@@ -272,9 +272,9 @@ app.get("/university/get-departments-admins/", (req, res, next) => {
 
 app.post("/department/add-course", (req, res, next) => {
     var errors = []
-    var sql = "INSERT INTO Course(Course_Name,Pre_Course_Req,Course_Type_Code_Id) VALUES (?,?,?);";
+    var sql = "INSERT INTO Course(Course_Name,Pre_Course_Req,Course_Type_Code_Id,Department_Id) VALUES (?,?,?,?);";
 
-    var params = [req.body.Course_Name, req.body.Pre_Course_Req, req.body.Course_Type_Code_Id];
+    var params = [req.body.Course_Name, req.body.Pre_Course_Req, req.body.Course_Type_Code_Id, req.body.Department_Id];
     db.all(sql, params, function(err, result) {
         if (err) {
             res.status(200).json({ message: "error", "error": err.message });
@@ -314,9 +314,9 @@ app.post("/department/add-module", (req, res, next) => {
 
 app.post("/department/edit-course", (req, res, next) => {
     var errors = []
-    var sql = "Update Course set Course_Name = ?,Pre_Course_Req = ? , Course_Type_Code_Id = ? where Course_Id = ?;";
+    var sql = "Update Course set Course_Name = ?,Pre_Course_Req = ? , Course_Type_Code_Id = ?,Department_Id=? where Course_Id = ?;";
 
-    var params = [req.body.Course_Name, req.body.Pre_Course_Req, req.body.Course_Type_Code_Id, req.body.Course_Id];
+    var params = [req.body.Course_Name, req.body.Pre_Course_Req, req.body.Course_Type_Code_Id, req.body.Course_Id, req.body.Department_Id];
     db.all(sql, params, function(err, result) {
         if (err) {
             res.status(200).json({ message: "error", "error": err.message });
@@ -352,7 +352,7 @@ app.post("/department/delete-course", (req, res, next) => {
 
 app.get("/department/courses", (req, res, next) => {
     var errors = []
-    var sql = "Select Course_Id,Course.Course_Name, Course.Pre_Course_Req,Course_Type_Code.Course_Name As Course_Type,Course.Course_Type_Code_Id from Course join Course_Type_Code on Course.Course_Type_Code_Id = Course_Type_Code.Courser_Type_Code_Id;";
+    var sql = "Select Course_Id,Course.Course_Name, Course.Department_Id,Course.Pre_Course_Req,Course_Type_Code.Course_Name As Course_Type,Course.Course_Type_Code_Id from Course join Course_Type_Code on Course.Course_Type_Code_Id = Course_Type_Code.Courser_Type_Code_Id;";
 
 
 
