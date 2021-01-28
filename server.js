@@ -314,9 +314,9 @@ app.post("/department/add-module", (req, res, next) => {
 
 app.post("/department/edit-course", (req, res, next) => {
     var errors = []
-    var sql = "Update Course set Course_Name = ?,Pre_Course_Req = ? , Course_Type_Code_Id = ? where Department_Id = ?;";
+    var sql = "Update Course set Course_Name = ?,Pre_Course_Req = ? , Course_Type_Code_Id = ? where Course_Id = ?;";
 
-    var params = [req.body.Course_Name, req.body.Pre_Course_Req, req.body.Course_Type_Code_Id];
+    var params = [req.body.Course_Name, req.body.Pre_Course_Req, req.body.Course_Type_Code_Id, req.body.Course_Id];
     db.all(sql, params, function(err, result) {
         if (err) {
             res.status(200).json({ message: "error", "error": err.message });
