@@ -74,7 +74,6 @@ app.get("/users/get-all/:user_role_id", (req, res, next) => {
     });
 });
 
-// Create a new book
 app.post("/register/", (req, res, next) => {
     var errors = []
 
@@ -90,7 +89,7 @@ app.post("/register/", (req, res, next) => {
     var sql = "INSERT INTO User(First_Name,Last_Name,User_Name,Role_Type_Code_Id,Password) VALUES (?,?,?,?,?);";
 
     var params = [data.First_Name, data.Last_Name, data.User_Name, data.Role_Type_Code_Id, data.Password];
-    db.all(sql, params, function(err, result) {
+    db.run(sql, params, function (err, result) {
         if (err) {
             res.status(200).json({ "error": err.message })
             return;
@@ -105,11 +104,10 @@ app.post("/register/", (req, res, next) => {
     });
 });
 
-// Create a new book
 app.post("/login/", (req, res, next) => {
     var errors = []
     if (!req.body.username) {
-        errors.push("Name for book not specified");
+        errors.push("user name not specified");
     }
     if (!req.body.password) {
         errors.push("password not specified");
@@ -184,6 +182,25 @@ app.post("/university/edit-department", (req, res, next) => {
 
     var params = [req.body.Department_Name, req.body.Department_Admin_Id, req.body.Department_Id];
     db.all(sql, params, function(err, result) {
+        if (err) {
+            res.status(200).json({ message: "error", "error": err.message });
+            return;
+        }
+
+        res.json({
+            "message": "success",
+            "data": result ? result[0] : {},
+        });
+        return res;
+
+    });
+});
+
+app.post("/university/delete-department", (req, res, next) => {
+    var sql = "DELETE FROM Department WHERE Department_Id = ?;";
+
+    var params = [req.body.Department_Id];
+    db.run(sql, params, function (err, result) {
         if (err) {
             res.status(200).json({ message: "error", "error": err.message });
             return;
@@ -301,6 +318,24 @@ app.post("/department/edit-course", (req, res, next) => {
 
     var params = [req.body.Course_Name, req.body.Pre_Course_Req, req.body.Course_Type_Code_Id];
     db.all(sql, params, function(err, result) {
+        if (err) {
+            res.status(200).json({ message: "error", "error": err.message });
+            return;
+        }
+
+        res.json({
+            "message": "success",
+            "data": result ? result[0] : {},
+        });
+        return res;
+
+    });
+});
+app.post("/department/delete-course", (req, res, next) => {
+    var sql = "DELETE FROM Course WHERE Course_Id = ?;";
+
+    var params = [req.body.Course_Id];
+    db.run(sql, params, function (err, result) {
         if (err) {
             res.status(200).json({ message: "error", "error": err.message });
             return;
