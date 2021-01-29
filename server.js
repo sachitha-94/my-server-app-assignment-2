@@ -421,7 +421,7 @@ app.post("/student/enroll", (req, res, next) => {
 app.get("/student/enrollment-status/:studentId", (req, res, next) => {
     var errors = [];
     console.log(req.params.studentId);
-    var sql = "Select User_Request.User_Id ,Status_Type_Code.Status_Type_Code_Id, Status_Type_Code.Status_Name, Course.Course_Id , Course.Course_Name from User_Request join Status_Type_Code on User_Request.Status_Type_Code_Id = Status_Type_Code.Status_Type_Code_Id join Course on Course.Course_Id = User_Request.Course_Id where User_Request.User_Id = (?);";
+    var sql = "Select User_Request.User_Id ,Status_Type_Code.Status_Type_Code_Id, Status_Type_Code.Status_Name, Course.Course_Id , Course.Course_Name from User_Request join Status_Type_Code on User_Request.Status_Type_Code_Id = Status_Type_Code.Status_Type_Code_Id join Course on Course.Course_Id = User_Request.Course_Id where User_Request.User_Id = ?;";
 
 
     db.all(sql, [req.params.studentId], function(err, result) {
