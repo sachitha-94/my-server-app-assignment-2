@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS "Exam" (
 	"Module_Id"	INTEGER ,
 	"Exam_Type_Code_Id"	INTEGER NOT NULL,
 	"Exam_Name"	TEXT NOT NULL,
+	"Date"	TEXT NOT NULL,
 	FOREIGN KEY("Exam_Type_Code_Id") REFERENCES "Exam_Type_Code"("Exam_Type_Code_ID"),
 	FOREIGN KEY("Module_Id") REFERENCES "Module"("Module_Id") ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY("Exam_Id" AUTOINCREMENT)

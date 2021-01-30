@@ -463,6 +463,49 @@ app.get("/student/course-status/:studentId", (req, res, next) => {
 // student routes end
 
 
+//Exam routes start
+
+// student routes start
+app.post("/exam/add-exam", (req, res, next) => {
+    var errors = []
+    var sql = "INSERT INTO Exam(Module_Id,Exam_Type_Code_Id,Exam_Name,Date) VALUES (?,?,?,?);";
+
+    var params = [req.body.Module_Id, req.body.Exam_Type_Code_Id, req.body.Exam_Name, req.body.Date];
+    db.all(sql, params, function (err, result) {
+        if (err) {
+            res.status(200).json({ message: "error", "error": err.message });
+            return;
+        }
+
+        res.json({
+            "message": "success",
+            "data": result ? result[0] : {},
+        });
+        return res;
+
+    });
+});
+
+app.get("/exam/all-exams", (req, res, next) => {
+    var errors = []
+    var sql = "Select Exam.Exam_Id,Exam.Exam_Name,Module.Module_Name,Exam.Date ,Exam_Type_Code.Exam_Type_Name from Exam join Exam_Type_Code on Exam.Exam_Type_Code_ID = Exam_Type_Code.Exam_Type_Code_ID join Module on Exam.Module_Id= Module.Module_Id;";
+
+    db.all(sql, [], function (err, result) {
+        if (err) {
+            res.status(200).json({ message: "error", "error": err.message });
+            return;
+        }
+
+        res.json({
+            "message": "success",
+            "data": result ? result : [],
+        });
+        return res;
+
+    });
+});
+// exam routes end
+
 // Default response for any other request
 app.use(function(req, res) {
     res.status(404);
